@@ -432,58 +432,58 @@ not_null<HistoryItem*> History::insertItem(
 }
 
 void History::destroyMessage(not_null<HistoryItem*> item) {
-	Expects(item->isHistoryEntry() || !item->mainView());
+	// Expects(item->isHistoryEntry() || !item->mainView());
 
-	const auto peerId = peer->id;
-	if (item->isHistoryEntry()) {
-		// All this must be done for all items manually in History::clear()!
-		item->destroyHistoryEntry();
-		if (item->isRegular()) {
-			if (const auto types = item->sharedMediaTypes()) {
-				session().storage().remove(Storage::SharedMediaRemoveOne(
-					peerId,
-					types,
-					item->id));
-			}
-		}
-		itemRemoved(item);
-	}
-	if (item->isSending()) {
-		session().api().cancelLocalItem(item);
-	}
+	// const auto peerId = peer->id;
+	// if (item->isHistoryEntry()) {
+	// 	// All this must be done for all items manually in History::clear()!
+	// 	item->destroyHistoryEntry();
+	// 	if (item->isRegular()) {
+	// 		if (const auto types = item->sharedMediaTypes()) {
+	// 			session().storage().remove(Storage::SharedMediaRemoveOne(
+	// 				peerId,
+	// 				types,
+	// 				item->id));
+	// 		}
+	// 	}
+	// 	itemRemoved(item);
+	// }
+	// if (item->isSending()) {
+	// 	session().api().cancelLocalItem(item);
+	// }
 
-	const auto document = [&] {
-		const auto media = item->media();
-		return media ? media->document() : nullptr;
-	}();
+	// const auto document = [&] {
+	// 	const auto media = item->media();
+	// 	return media ? media->document() : nullptr;
+	// }();
 
-	owner().unregisterMessage(item);
-	Core::App().notifications().clearFromItem(item);
+	// owner().unregisterMessage(item);
+	// Core::App().notifications().clearFromItem(item);
 
-	auto hack = std::unique_ptr<HistoryItem>(item.get());
-	const auto i = _messages.find(hack);
-	hack.release();
+	// auto hack = std::unique_ptr<HistoryItem>(item.get());
+	// const auto i = _messages.find(hack);
+	// hack.release();
 
-	Assert(i != end(_messages));
-	_messages.erase(i);
+	// Assert(i != end(_messages));
+	// _messages.erase(i);
 
-	if (document) {
-		session().data().documentMessageRemoved(document);
-	}
+	// if (document) {
+	// 	session().data().documentMessageRemoved(document);
+	// }
 }
 
 void History::destroyMessagesByDates(TimeId minDate, TimeId maxDate) {
-	auto toDestroy = std::vector<not_null<HistoryItem*>>();
-	for (const auto &message : _messages) {
-		if (message->isRegular()
-			&& message->date() > minDate
-			&& message->date() < maxDate) {
-			toDestroy.push_back(message.get());
-		}
-	}
-	for (const auto item : toDestroy) {
-		item->destroy();
-	}
+	// auto toDestroy = std::vector<not_null<HistoryItem*>>();
+	// for (const auto &message : _messages) {
+	// 	if (message->isRegular()
+	// 		&& message->date() > minDate
+	// 		&& message->date() < maxDate) {
+	// 		toDestroy.push_back(message.get());
+	// 	}
+	// }
+	// for (const auto item : toDestroy) {
+	// 	item->destroy();
+	// }
 }
 
 void History::unpinAllMessages() {
